@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tech Stack Recommender — AI-Powered Career Matching</title>
+  <meta name="description" content="Discover your ideal tech career path using TF-IDF vectorization and cosine similarity. Enter your skills and get instant job role recommendations." />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+  <div class="app-shell">
+
+    <!-- ═══════════ TOP BAR ═══════════ -->
+    <nav class="top-bar">
+      <div class="top-bar-brand">
+        <div class="brand-icon">&#x2B22;</div>
+        <span class="brand-text">SkillMatch</span>
+      </div>
+      <div class="top-bar-tags">
+        <span class="tech-tag accent">TF-IDF</span>
+        <span class="tech-tag">Cosine Sim</span>
+        <span class="tech-tag">scikit-learn</span>
+      </div>
+    </nav>
+
+    <!-- ═══════════ HERO ═══════════ -->
+    <header class="hero-banner">
+      <h1>Find Your Ideal <span class="highlight">Tech Role</span></h1>
+      <p class="hero-subtitle">Enter your technical skills and our content-based filtering engine will match you with the most relevant career paths.</p>
+      <div class="metric-row">
+        <div class="metric-pill">
+          <span class="metric-dot blue"></span>
+          <span class="metric-val" id="stat-roles">20</span>
+          <span class="metric-label">Roles</span>
+        </div>
+        <div class="metric-pill">
+          <span class="metric-dot teal"></span>
+          <span class="metric-val" id="stat-skills">0</span>
+          <span class="metric-label">Skills in Corpus</span>
+        </div>
+        <div class="metric-pill">
+          <span class="metric-dot orange"></span>
+          <span class="metric-val">Top 3</span>
+          <span class="metric-label">Matches</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ═══════════ MAIN 2-COL LAYOUT ═══════════ -->
+    <div class="main-layout">
+
+      <!-- LEFT: Input Card -->
+      <div class="card input-section">
+        <div class="card-label">
+          <div class="card-label-icon blue">&#9881;</div>
+          <div>
+            <h2>Your Skills</h2>
+            <p>Add at least 3 technical skills</p>
+          </div>
+        </div>
+
+        <!-- Input with autocomplete -->
+        <div class="input-group" id="input-group">
+          <input
+            type="text"
+            class="skill-field"
+            id="skill-input"
+            placeholder="Type a skill (e.g. Python, Docker)..."
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <button class="field-add-btn" id="add-btn" title="Add skill">+</button>
+          <div class="suggest-list" id="suggest-list"></div>
+        </div>
+
+        <!-- Tags -->
+        <div class="chips-area" id="chips-area">
+          <span class="chips-empty" id="chips-empty">Your selected skills will appear here...</span>
+        </div>
+
+        <!-- Counter -->
+        <div class="count-row">
+          <span><span class="num" id="skill-count">0</span> skill(s) selected</span>
+          <span class="min-pill needs" id="min-pill">Min 3 required</span>
+        </div>
+
+        <!-- Buttons -->
+        <div class="btn-row">
+          <button class="btn btn-go" id="recommend-btn" disabled>
+            <span class="spin"></span>
+            <span class="btn-label">&#128269; Get Recommendations</span>
+          </button>
+          <button class="btn btn-reset" id="clear-btn">
+            &#10005; Clear
+          </button>
+        </div>
+
+        <!-- Presets -->
+        <div class="presets-bar">
+          <div class="presets-title">Quick Profiles</div>
+          <div class="presets-flex">
+            <button class="preset-chip" data-skills="Python,Machine Learning,Deep Learning,TensorFlow,Natural Language Processing">
+              <span class="p-icon">&#129302;</span> ML / AI Engineer
+            </button>
+            <button class="preset-chip" data-skills="Docker,Kubernetes,AWS,Terraform,CI/CD,Linux">
+              <span class="p-icon">&#9729;</span> DevOps / Cloud
+            </button>
+            <button class="preset-chip" data-skills="JavaScript,React,CSS,TypeScript,Responsive Design">
+              <span class="p-icon">&#127912;</span> Frontend Dev
+            </button>
+            <button class="preset-chip" data-skills="Python,SQL,Apache Spark,ETL,Airflow,Cloud Computing">
+              <span class="p-icon">&#128202;</span> Data Engineer
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Results Card -->
+      <div class="card results-section">
+        <div class="card-label">
+          <div class="card-label-icon teal">&#127919;</div>
+          <div>
+            <h2>Recommendations</h2>
+            <p>Top matching job roles for your profile</p>
+          </div>
+        </div>
+
+        <div id="results-container">
+          <div class="empty-state" id="empty-state">
+            <div class="empty-glyph">&#128161;</div>
+            <h3>Ready to Analyze</h3>
+            <p>Add your skills and click "Get Recommendations" to discover your ideal tech role.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ═══════════ DATASET EXPLORER ═══════════ -->
+    <div class="explorer-block">
+      <div class="card" style="padding: 1.5rem 1.75rem;">
+        <button class="explorer-btn" id="explorer-btn">
+          <div class="card-label" style="margin-bottom: 0;">
+            <div class="card-label-icon blue">&#128218;</div>
+            <div>
+              <h2>Dataset Explorer</h2>
+              <p>Browse all 20 job roles and their skill profiles</p>
+            </div>
+          </div>
+          <span class="arrow-icon">&#9660;</span>
+        </button>
+        <div class="explorer-content" id="explorer-content">
+          <div class="role-grid" id="role-grid"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ FOOTER ═══════════ -->
+    <footer class="app-foot">
+      Built with <span class="accent">TF-IDF Vectorization</span> &middot; <span class="accent">Cosine Similarity</span> &middot; scikit-learn &middot; Flask
+    </footer>
+
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>
