@@ -81,3 +81,8 @@ Ensure you have Python 3.8+ installed.
 
 The engine evaluates matches against 20 key roles, including:
 * *Machine Learning Engineer*, *DevOps Engineer*, *Data Scientist*, *Frontend Developer*, *Backend Developer*, *Full Stack Developer*, *Security Architect*, *Database Administrator*, *Robotics Engineer*, *Cloud Architect*, and more.
+
+## Screenshots
+
+<img width="1919" height="946" alt="image" src="https://github.com/user-attachments/assets/e303762a-d78f-420e-8b46-f2246898fbff" />
+<img width="1919" height="945" alt="image" src="https://github.com/user-attachments/assets/cc095bb5-1dab-4bb3-ab38-d5b23bdc162f" />
